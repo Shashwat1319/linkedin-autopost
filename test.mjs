@@ -36,6 +36,7 @@ const res = await fetch("https://api.linkedin.com/rest/posts", {
     Authorization: `Bearer ${TOKEN}`,
     "Content-Type": "application/json",
     "X-Restli-Protocol-Version": "2.0.0",
+    "LinkedIn-Version": "202506",
     "LinkedIn-Api-Version": "202506",
   },
   body: JSON.stringify({
