@@ -23,8 +23,8 @@ const HEADERS = {
   Authorization: `Bearer ${TOKEN}`,
   "Content-Type": "application/json",
   "X-Restli-Protocol-Version": "2.0.0",
-  "LinkedIn-Version": "202506",
-  "LinkedIn-Api-Version": "202506",
+  "LinkedIn-Version": "202610",
+  "LinkedIn-Api-Version": "202610",
 }
 
 const today = () => new Date().toISOString().slice(0, 10)
