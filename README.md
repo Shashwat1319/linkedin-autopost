@@ -23,16 +23,19 @@ own OAuth app se. Sirf **tara khud ka account**, development mode me.
 
 ## Roz ka flow
 
-- `queue/` me jo sabse pehle `.md` file hai wo **next day 8:45 AM IST** post hoti hai
+- `queue/` me jo sabse pehle `.md` file hai wo **roz 8:45 AM IST** post hoti hai
 - Post ke baad file `posted/` me chali jaati hai + `state.json` update hota hai
 - Ek din me max **1 post** (state guard) — spam risk zero
 - Queue khali? Action chup-chaap skip karta hai
 
+**Current queue: 105 posts (~3.5 mahine ka content).** Queue 10 se kam ho to
+naye posts add kar dena — khali queue pe Action skip karta hai (fail nahi).
+
 ## Naya post add karna
 
-`queue/` me nayi file daalo — naam se priority decide hoti hai:
+`queue/` me nayi file daalo — naam se priority decide hoti hai (3-digit zero-pad):
 ```
-queue/05-my-new-post.md     ← kal post hoga (05 < 06)
+queue/106-my-new-post.md    ← us din post hoga (106 > 105)
 ```
 Content = post body (hashtag bhi andar). **Max 3000 chars.**
 
