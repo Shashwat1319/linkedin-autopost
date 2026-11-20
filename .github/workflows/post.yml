@@ -1,0 +1,42 @@
+name: LinkedIn auto-post
+
+on:
+  schedule:
+    # 03:15 UTC = 08:45 AM IST — morning feed slot
+    - cron: "15 3 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Publish next queued post
+        env:
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+        run: node post.mjs
+
+      - name: Commit archive + state
+        run: |
+          git config user.name "linkedin-autopost[bot]"
+          git config user.email "linkedin-autopost[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: archive posted content"
+            git push
+          fi
