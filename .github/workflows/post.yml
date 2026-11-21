@@ -4,6 +4,9 @@ on:
   schedule:
     # 03:15 UTC = 08:45 AM IST — morning feed slot
     - cron: "15 3 * * *"
+    # 14:05 UTC = 19:35 PM IST — same-day backup: state guard skips
+    # automatically if morning slot already posted
+    - cron: "5 14 * * *"
   workflow_dispatch: {}
 
 permissions:
