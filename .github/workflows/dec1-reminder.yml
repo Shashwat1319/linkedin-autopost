@@ -1,0 +1,33 @@
+name: Dec 1 job-hunt kickoff reminder
+
+on:
+  schedule:
+    # 04:00 UTC = 09:30 AM IST,1st Dec (year-guarded to 2026)
+    - cron: "0 4 1 12 *"
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create kickoff issue (2026 only)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "$(date -u +%Y)" != "2026" ]; then
+            echo "Not 2026 — skipping."
+            exit 0
+          fi
+          curl -sf -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues" \
+            -d '{
+              "title": "🚀 Aaj se JOB ENGINE start — report: X applications, Y DMs (raat 10 baje)",
+              "body": "## Aaj ka target\n- Morning: DSA 6:30\n- Evening: 90-min application engine (LinkedIn 10 + Naukri 5 + Outreach 5)\n- Raat 10 baje: ek-line report (X applications, Y DMs)\n\n## Weekly\n- Target: 70+ applications/hafta\n- Track B: SmartGahr data (repo + earnings) pending hai\n\n## Links\n- LinkedIn: linkedin.com/jobs/search/?keywords=MERN%20Stack&f_WT=2&location=India\n- Naukri: naukri.com/mern-stack-developer-jobs\n- Portfolio: shashwat-srivastava.netlify.app"
+            }' \
+          && echo "Reminder issue created." \
+          || { echo "Issue creation FAILED — this failure email IS the reminder."; exit 1; }
